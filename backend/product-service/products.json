@@ -1,0 +1,86 @@
+[
+    {
+        "name": "Red Velvet Cake",
+        "price": 350000,
+        "description": "Kue red velvet lembut dengan lapisan cream cheese frosting premium.",
+        "image_url": "/cakes/red-velvet.jpg",
+        "stock": 10
+    },
+    {
+        "name": "Chocolate Ganache Tart",
+        "price": 280000,
+        "description": "Tart renyah dengan filling ganache cokelat Belgia yang meleleh di mulut.",
+        "image_url": "/cakes/choco-tart.jpg",
+        "stock": 15
+    },
+    {
+        "name": "Carrot Cake",
+        "price": 320000,
+        "description": "Kue wortel moist dengan taburan kacang and cream cheese frosting.",
+        "image_url": "/cakes/carrotcake.jpg",
+        "stock": 8
+    },
+    {
+        "name": "Cupcake",
+        "price": 30000,
+        "description": "Cupcake lembut dengan berbagai pilihan topping dan filling.",
+        "image_url": "/cakes/cupcake.jpg",
+        "stock": 50
+    },
+    {
+        "name": "Brownies",
+        "price": 250000,
+        "description": "Brownies fudgy dengan potongan kacang almond dan taburan gula halus.",
+        "image_url": "/cakes/brownies.jpg",
+        "stock": 20
+    },
+    {
+        "name": "Strawberry Shortcake",
+        "price": 340000,
+        "description": "Kue sponge lembut dengan lapisan krim dan stroberi segar.",
+        "image_url": "/cakes/strawberryshortcake.jpg",
+        "stock": 12
+    },
+    {
+        "name": "Burn Cheese Cake",
+        "price": 300000,
+        "description": "Cheesecake panggang dengan tekstur creamy dan rasa keju yang kaya.",
+        "image_url": "/cakes/burncheesecake.jpg",
+        "stock": 10
+    },
+    {
+        "name": "Black Forest Cake",
+        "price": 360000,
+        "description": "Kue cokelat dengan lapisan krim, ceri, dan serutan cokelat.",
+        "image_url": "/cakes/blackforest.jpg",
+        "stock": 7
+    },
+    {
+        "name": "Cake Roll",
+        "price": 150000,
+        "description": "Rolade kue lembut dengan berbagai pilihan filling lezat.",
+        "image_url": "/cakes/cakeroll.jpg",
+        "stock": 25
+    },
+    {
+        "name": "Cookies",
+        "price": 120000,
+        "description": "Kue kering renyah dengan berbagai varian rasa.",
+        "image_url": "/cakes/cookies.jpg",
+        "stock": 40
+    },
+    {
+        "name": "Macaron",
+        "price": 200000,
+        "description": "Macaron Prancis elegan dengan isian krim lembut.",
+        "image_url": "/cakes/macarons.jpg",
+        "stock": 60
+    },
+    {
+        "name": "Pie",
+        "price": 270000,
+        "description": "Pai buah segar dengan kulit renyah dan isian lezat.",
+        "image_url": "/cakes/pie.jpg",
+        "stock": 10
+    }
+]

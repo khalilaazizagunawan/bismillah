@@ -1,0 +1,16 @@
+{
+  "name": "integration-service",
+  "version": "1.0.0",
+  "description": "Service untuk integrasi dengan kelompok lain (Toko Kue Customer)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "axios": "^1.6.7",
+    "pg": "^8.11.3"
+  }
+}
+

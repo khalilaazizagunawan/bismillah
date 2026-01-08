@@ -1,0 +1,153 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: toko_kue_postgres
+    environment:
+      POSTGRES_USER: toko_user
+      POSTGRES_PASSWORD: secret123
+      POSTGRES_DB: toko_kue_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # file untuk create databases tambahan
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U toko_user -d toko_kue_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  gateway:
+    build: ./backend/gateway
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+      - product
+      - inventory
+      - procurement
+      - payment
+      - order
+      - integration
+    environment:
+      POSTGRES_USER: toko_user
+      POSTGRES_PASSWORD: secret123
+      POSTGRES_HOST: toko_kue_postgres
+    volumes:
+      - ./backend/gateway:/app
+      - /app/node_modules
+    networks:
+      - default
+      - tellyou---eai-main_shared-network
+
+  product:
+    build: ./backend/product-service
+    ports:
+      - "4001:4001"
+    depends_on:
+       postgres:
+          condition: service_healthy
+    environment:
+      POSTGRES_DB: product_db
+      POSTGRES_USER: toko_user
+      POSTGRES_PASSWORD: secret123
+      POSTGRES_HOST: toko_kue_postgres
+    volumes:
+      - ./backend/product-service:/app
+      - /app/node_modules
+
+  inventory:
+    build: ./backend/inventory-service
+    ports:
+      - "4002:4002"
+    depends_on:
+       postgres:
+          condition: service_healthy
+    environment:
+      POSTGRES_DB: inventory_db
+      POSTGRES_USER: toko_user
+      POSTGRES_PASSWORD: secret123
+      POSTGRES_HOST: toko_kue_postgres
+
+  procurement:
+    build: ./backend/procurement-service
+    ports:
+      - "4003:4003"
+    depends_on:
+       postgres:
+          condition: service_healthy
+    environment:
+      POSTGRES_DB: procurement_db
+      POSTGRES_USER: toko_user
+      POSTGRES_PASSWORD: secret123
+      POSTGRES_HOST: toko_kue_postgres
+
+  payment:
+    build: ./backend/payment-service
+    ports:
+      - "4004:4004"
+    depends_on:
+       postgres:
+          condition: service_healthy
+    environment:
+      POSTGRES_DB: payment_db
+      POSTGRES_USER: toko_user
+      POSTGRES_PASSWORD: secret123
+      POSTGRES_HOST: toko_kue_postgres
+
+  order:
+    build: ./backend/order-service
+    ports:
+      - "4005:4005"
+    depends_on:
+       postgres:
+          condition: service_healthy
+    environment:
+      POSTGRES_DB: order_db
+      POSTGRES_USER: toko_user
+      POSTGRES_PASSWORD: secret123
+      POSTGRES_HOST: toko_kue_postgres
+
+  integration:
+    build: ./backend/integration-service
+    ports:
+      - "4006:4006"
+    depends_on:
+       postgres:
+          condition: service_healthy
+       product:
+          condition: service_started
+       inventory:
+          condition: service_started
+    environment:
+      POSTGRES_DB: integration_db
+      POSTGRES_USER: toko_user
+      POSTGRES_PASSWORD: secret123
+      POSTGRES_HOST: toko_kue_postgres
+      SUPPLIER_API_URL: ${SUPPLIER_API_URL:-http://localhost:5000}
+      STORE_NAME: ${STORE_NAME:-Toko Kue Anda}
+      TELLYOU_INVENTORY_URL: http://inventory-service:3000/graphql
+      TELLYOU_ORDER_URL: http://order-service:3000/graphql
+      TELLYOU_STOCK_PAYMENT_URL: http://stock-payment-service:3000/graphql
+    networks:
+      - default
+      - tellyou---eai-main_shared-network
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - gateway
+    # VITE_API_URL tidak perlu di-set karena browser akan akses localhost:4000
+    # Environment variable VITE_* hanya digunakan saat build time, bukan runtime
+
+volumes:
+  postgres_data:
+
+networks:
+  tellyou---eai-main_shared-network:
+    external: true
