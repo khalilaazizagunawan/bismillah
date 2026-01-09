@@ -579,7 +579,27 @@ const resolvers = {
           throw new Error(data.errors[0].message);
         }
 
-        return data.data.createTransaction;
+        const tellyouResponse = data.data.createTransaction;
+
+        // 2. Simpan sebagai Purchase Order Lokal (Procurement Service)
+        // Agar muncul di Frontend Toko Kue (Menu Procurement) sebagai pembelian bahan
+        try {
+          await axios.post("http://procurement:4003/pos", {
+            supplier: "Tellyou (Integrated)",
+            items: items.map(item => ({
+              name: item.name || `Product #${item.id}`,
+              qty: parseInt(item.qty),
+              unit: "pcs" // Default unit
+            })),
+            status: "Pending"
+          });
+          console.log("✅ Purchase Order saved locally for Tellyou integration");
+        } catch (localError) {
+          console.error("⚠️ Failed to save local PO:", localError.message);
+          // throw new Error("Order ke Tellyou berhasil, tapi gagal simpan ke Procurement: " + localError.message);
+        }
+
+        return tellyouResponse;
       } catch (error) {
         console.error("Tellyou Integration Error:", error.message);
         throw new Error("Gagal terhubung ke Tellyou: " + (error.response?.data?.message || error.message));
